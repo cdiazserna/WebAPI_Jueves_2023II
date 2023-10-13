@@ -16,7 +16,7 @@ namespace ShoppingAPI_Jueves_2023II.Controllers
         }
 
         [HttpGet, ActionName("Get")]
-        [Route("Get")]
+        [Route("GetAll")]
         public async Task<ActionResult<IEnumerable<Country>>> GetCountriesAsync()
         {
             var countries = await _countryService.GetCountriesAsync();
@@ -24,19 +24,6 @@ namespace ShoppingAPI_Jueves_2023II.Controllers
             if (countries == null || !countries.Any()) return NotFound();
 
             return Ok(countries);
-        }
-
-        [HttpGet, ActionName("Get")]
-        [Route("Get/{id}")]
-        public async Task<ActionResult<Country>> GetCountryByIdAsync(Guid id)
-        {
-            if (id == null) return BadRequest("Id es requerido!");
-
-            var country = await _countryService.GetCountryByIdAsync(id);
-
-            if (country == null) return NotFound();
-
-            return Ok(country);
         }
 
         [HttpPost, ActionName("Create")]
@@ -57,9 +44,35 @@ namespace ShoppingAPI_Jueves_2023II.Controllers
             }
         }
 
+        [HttpGet, ActionName("Get")]
+        [Route("GetById/{id}")] //URL: api/countries/get
+        public async Task<ActionResult<Country>> GetCountryByIdAsync(Guid id)
+        {
+            if (id == null) return BadRequest("Id es requerido!");
+
+            var country = await _countryService.GetCountryByIdAsync(id);
+
+            if (country == null) return NotFound(); // 404
+
+            return Ok(country); // 200
+        }
+
+        [HttpGet, ActionName("Get")]
+        [Route("GetByName/{name}")] //URL: api/countries/get
+        public async Task<ActionResult<Country>> GetCountryByNameAsync(string name)
+        {
+            if (name == null) return BadRequest("Nombre del país requerido!");
+
+            var country = await _countryService.GetCountryByNameAsync(name);
+
+            if (country == null) return NotFound(); // 404
+
+            return Ok(country); // 200
+        }
+
         [HttpPut, ActionName("Edit")]
-        [Route("Edit/{id}")]
-        public async Task<ActionResult> EditCountryAsync(Country country)
+        [Route("Edit")]
+        public async Task<ActionResult<Country>> EditCountryAsync(Country country)
         {
             try
             {
@@ -76,16 +89,16 @@ namespace ShoppingAPI_Jueves_2023II.Controllers
         }
 
         [HttpDelete, ActionName("Delete")]
-        [Route("Delete/{id}")]
-        public async Task<ActionResult> DeleteCountryAsync(Guid id)
+        [Route("Delete")]
+        public async Task<ActionResult<Country>> DeleteCountryAsync(Guid id)
         {
-            if (id == null) return BadRequest("Id es requerido.");
+            if (id == null) return BadRequest("Id es requerido!");
 
             var deletedCountry = await _countryService.DeleteCountryAsync(id);
 
-            if (deletedCountry == null) return NotFound("País no encontrado en el sistema");
+            if (deletedCountry == null) return NotFound("País no encontrado!");
 
-            return Ok($"{deletedCountry.Name} fue eliminado!");
+            return Ok(deletedCountry);
         }
     }
 }

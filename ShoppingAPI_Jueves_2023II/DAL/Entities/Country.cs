@@ -8,5 +8,9 @@ namespace ShoppingAPI_Jueves_2023II.DAL.Entities
         [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caracteres.")] // Longitud máx
         [Required(ErrorMessage = "Es campo {0} es obligatorio")] // Campo obligatorio
         public string Name { get; set; }
+
+        [Display(Name = "Estados")]
+        //relación con State 
+        public ICollection<State>? States { get; set; }
     }
 }

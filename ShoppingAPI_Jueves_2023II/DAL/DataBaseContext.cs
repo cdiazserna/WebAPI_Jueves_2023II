@@ -16,11 +16,13 @@ namespace ShoppingAPI_Jueves_2023II.DAL
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique(); //Aquí creo un índice del campo Name para la tabla Countries
+            modelBuilder.Entity<State>().HasIndex("Name", "CountryId").IsUnique(); //Indices Compuestos
         }
 
         #region DbSets
 
         public DbSet<Country> Countries { get; set; }
+        public DbSet<State> States { get; set; }
 
         #endregion
     }

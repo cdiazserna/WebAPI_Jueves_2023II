@@ -2,7 +2,6 @@
 using ShoppingAPI_Jueves_2023II.DAL;
 using ShoppingAPI_Jueves_2023II.DAL.Entities;
 using ShoppingAPI_Jueves_2023II.Domain.Interfaces;
-using System.Diagnostics.Metrics;
 
 namespace ShoppingAPI_Jueves_2023II.Domain.Services
 {
@@ -17,7 +16,9 @@ namespace ShoppingAPI_Jueves_2023II.Domain.Services
 
         public async Task<IEnumerable<Country>> GetCountriesAsync()
         {
-            return await _context.Countries.ToListAsync();
+            return await _context.Countries
+                .Include(c => c.States)
+                .ToListAsync();
         }
 
         public async Task<Country> CreateCountryAsync(Country country)

@@ -88,7 +88,7 @@ namespace ShoppingAPI_Jueves_2023II.Controllers
 
             if (deletedState == null) return NotFound("País no encontrado!");
 
-            return Ok(deletedState);
+            return Ok("State Deleted"); //in Ok() method you can send a message in swagger instead send the object
         }
     }
 }
